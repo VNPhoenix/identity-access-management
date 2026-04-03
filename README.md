@@ -40,6 +40,7 @@ mvn test
 - JDBC conventions & SQL style: `.claude/rules/jdbc.md`
 - API design (versioning, HTTP verbs, DTOs): `.claude/rules/api-design.md`
 - Exception hierarchy & error responses: `.claude/rules/exception-handling.md`
+- Security (JWT, authorisation, secrets, input validation): `.claude/rules/security.md`
 - Java 21 style, naming & size limits: `.claude/rules/code-style.md`
 - Test conventions (JUnit 5, Mockito, Testcontainers): `.claude/rules/testing.md`
 - Hard stop list — never generate: `.claude/rules/never-do.md`
