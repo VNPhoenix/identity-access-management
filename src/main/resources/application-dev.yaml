@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/iam_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+  flyway:
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:dev-secret-key-not-for-production-use-only}
+    expiration-ms: 86400000   # 24 hours for dev convenience
+
+logging:
+  level:
+    root: INFO
+    org.vnphoenix: DEBUG
+    org.springframework.security: DEBUG
+    org.flywaydb: DEBUG
