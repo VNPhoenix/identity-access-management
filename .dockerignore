@@ -1,0 +1,34 @@
+# Maven build output — recompiled inside Docker; sending it wastes context and risks stale artifacts
+target/
+
+# Maven wrapper — not used in Docker build (Maven is provided by the Maven base image instead)
+.mvn/
+mvnw
+mvnw.cmd
+
+# Runtime log files written locally — must never be baked into the image
+logs/
+
+# Git repository history — no role in the build; can be hundreds of MB and leaks commit metadata
+.git/
+
+# Git configuration — not needed inside the container
+.gitignore
+
+# IntelliJ IDEA project files — IDE-specific, irrelevant to the build
+.idea/
+
+# Project documentation — not needed at runtime
+docs/
+
+# Project readme — not needed at runtime
+README.md
+
+# AI assistant instructions — never belongs in a production image
+CLAUDE.md
+
+# Claude rules / skills / commands directory — same reason as CLAUDE.md
+.claude/
+
+# Local developer scripts and tooling — not needed at runtime
+tools/

@@ -46,3 +46,7 @@ replay_pid*
 
 # IntelliJ IDEA
 .idea/
+
+# Windows GNU Make artifact — created when $(shell ...) pipelines fail on Windows
+# (nul is the Windows null device; stray file appears due to Make shell I/O handling)
+nul
