@@ -1,7 +1,7 @@
 # Maven build output — recompiled inside Docker; sending it wastes context and risks stale artifacts
 target/
 
-# Maven wrapper — not used in Docker build (Maven is installed via apk instead)
+# Maven wrapper — not used in Docker build (Maven is provided by the Maven base image instead)
 .mvn/
 mvnw
 mvnw.cmd
