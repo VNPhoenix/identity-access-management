@@ -7,6 +7,7 @@ Scaffold a use case (application service) for: $ARGUMENTS
 - `.claude/rules/ddd-layering.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/exception-handling.md`
+- `.claude/rules/security.md`
 - `.claude/rules/never-do.md`
 
 ## Skills to use

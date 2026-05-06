@@ -48,6 +48,21 @@ for commands that accept `$ARGUMENTS`.
 
 ---
 
+## Agents
+
+For heavier tasks that would pollute the main conversation context, use an agent
+from `.claude/agents/` instead of (or after) the equivalent command:
+
+| Agent | When to prefer over the command |
+|---|---|
+| `ddd-reviewer` | Reviewing multiple files or a full PR — reads all 13 rules in isolation |
+| `iam-security-auditor` | Pre-merge security review — 30+ IAM-specific checks |
+| `test-writer` | Writing + running tests — keeps test output out of main context |
+| `migration-validator` | Validating SQL before apply — returns APPROVED / NEEDS FIXES verdict |
+| `feature-scaffolder` | Full vertical slice — generates all layers and compiles autonomously |
+
+---
+
 ## Command dependencies
 
 Every command references the rules and skills it depends on at the top of the file.

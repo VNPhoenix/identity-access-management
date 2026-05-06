@@ -46,6 +46,14 @@ Diagnose and fix the following issue in the current file: $ARGUMENTS
    - Repository interface not found — implementation not annotated with `@Repository`
    - Use case not found — not annotated with `@Service`
 
+   **Nimbus JOSE JWT issues**
+   - `ParseException` — token is malformed or not a valid JWT string
+   - `JOSEException` — signature verification failed (wrong secret or algorithm mismatch)
+   - `BadJOSEException` — token failed security policy (expired, wrong issuer, wrong audience)
+   - `IllegalStateException: JWT not signed` — `SignedJWT.parse()` succeeded but `.verify()` was never called; claims were read from an unverified token
+   - Algorithm mismatch — filter configured for HS256 but token was signed with RS256 (or vice versa)
+   - Claims read before `verify()` — Nimbus allows reading claims on unsigned/unverified tokens; always call `verify()` first
+
    **Test issues**
    - Testcontainers datasource URL not wired via `@DynamicPropertySource`
    - `@MockBean` missing for a use case dependency in `@WebMvcTest`
