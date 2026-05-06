@@ -48,6 +48,10 @@ public class OrderController {
 }
 ```
 
+> **Note:** the example above injects four use cases — declare all of them as
+> `private final` fields and include them in `@RequiredArgsConstructor`. Never
+> reference a use case that is not declared as a constructor-injected field.
+
 ## Request DTO
 ```java
 public record PlaceOrderRequest(

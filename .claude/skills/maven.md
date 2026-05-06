@@ -29,16 +29,16 @@ Never present code as complete if `mvn compile` fails.
 - Java version in `<properties>`: `<java.version>21</java.version>`
 
 ## Compiler config
-Ensure `maven-compiler-plugin` is configured for Java 21:
+`maven-compiler-plugin` is configured for Java 21 in this project:
 ```xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-compiler-plugin</artifactId>
     <configuration>
         <release>21</release>
-        <compilerArgs>
-            <arg>--enable-preview</arg>
-        </compilerArgs>
     </configuration>
 </plugin>
 ```
+Do not add `--enable-preview` unless a specific preview feature is required and the
+flag is also added to the Surefire plugin — omitting it from Surefire causes test
+compilation to fail even when sources compile.
