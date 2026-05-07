@@ -41,9 +41,14 @@ Add a new REST endpoint for: $ARGUMENTS
    - Map result to response DTO
    - Return `ResponseEntity` with correct status code
 
-6. Add request/response DTO records to `interface/dto/` if new ones are needed.
+6. Add `@PreAuthorize` where required (see `security.md`):
+   - Admin-only operations: `@PreAuthorize("hasRole('ADMIN')")`
+   - Owner-only operations: verify ownership in the use case, not the controller
+   - Public endpoints (auth flows): no `@PreAuthorize` needed — already `permitAll()` in SecurityFilterChain
 
-7. Run `mvn compile` and fix any errors.
+7. Add request/response DTO records to `interface/dto/` if new ones are needed.
+
+8. Run `mvn compile` and fix any errors.
 
 ## Output
 List every file created or modified with its full package path.

@@ -137,7 +137,7 @@ class JdbcOrderRepositoryTest {
 
     @Container
     static final PostgreSQLContainer<?> postgres =
-        new PostgreSQLContainer<>("postgres:16-alpine");
+        new PostgreSQLContainer<>("postgres:17-alpine");
 
     @DynamicPropertySource
     static void datasourceProperties(DynamicPropertyRegistry registry) {
