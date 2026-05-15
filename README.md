@@ -30,6 +30,14 @@ docker compose up -d
 mvn test
 ```
 
+## Architecture Decisions
+
+Significant architectural choices are documented as ADRs in [`docs/adr/`](docs/adr/README.md).
+
+| Version | Title | Status |
+|---|---|---|
+| [1.0](docs/adr/ADR-1.0-dockerize-with-layertools.md) | Dockerizing with Spring Boot Layertools | Accepted |
+
 ## Further reading
 - DDD layering & dependency rules: `.claude/rules/ddd-layering.md`
 - Domain model (entities, events): `.claude/rules/domain-model.md`
