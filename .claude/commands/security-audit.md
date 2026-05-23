@@ -13,7 +13,7 @@ Audit the current file for security vulnerabilities.
 ## Skills to use
 - `.claude/skills/spring-security.md`
 - `.claude/skills/spring-rest.md`
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 
 ## Steps
 

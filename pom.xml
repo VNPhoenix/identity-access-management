@@ -84,10 +84,10 @@
             <artifactId>nimbus-jose-jwt</artifactId>
         </dependency>
 
-        <!-- Database -->
+        <!-- Spring Data JDBC — repository interfaces, entity mapping, custom @Query SQL; no ORM -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
         <dependency>
             <!-- PostgreSQL 17 JDBC driver -->

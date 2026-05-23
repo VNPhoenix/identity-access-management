@@ -3,14 +3,14 @@
 Audit the current file for performance issues.
 
 ## Rules to follow
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/infrastructure-layer.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/never-do.md`
 
 ## Skills to use
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 - `.claude/skills/spring-rest.md`
 
 ## Steps

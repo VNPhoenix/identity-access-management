@@ -6,7 +6,7 @@ Diagnose and fix the following issue in the current file: $ARGUMENTS
 - `.claude/rules/ddd-layering.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/never-do.md`
 
 ## Skills to use
@@ -33,10 +33,12 @@ Diagnose and fix the following issue in the current file: $ARGUMENTS
    - Circular dependency between two beans
    - Field injection ordering problem
 
-   **JDBC / persistence issues**
-   - Named parameter mismatch between SQL (`:paramName`) and `MapSqlParameterSource` key
-   - `ResultSetExtractor` calling setters or public constructor instead of `reconstitute()`
-   - Child rows not deleted before re-insert causing unique constraint violation
+   **Spring Data JDBC / persistence issues**
+   - Named parameter mismatch between SQL (`:paramName`) and `@Param` value in `@Query`
+   - UUID-ID `{Aggregate}DbEntity` not implementing `Persistable` — framework always inserting
+   - `isNew` not set in mapper's `toEntity()` — always false, causing duplicate-key errors
+   - DB entity missing `@MappedCollection` on child list — children not loaded or saved
+   - Mapper calling setters or constructor directly on domain class instead of `reconstitute()`
    - UUID stored as String — type mismatch in query binding
    - `Instant` stored without timezone — wrong value on read
 

@@ -13,7 +13,7 @@ for commands that accept `$ARGUMENTS`.
 | `new-feature.md` | `/new-feature` | yes | Full vertical slice — all layers end to end |
 | `new-aggregate.md` | `/new-aggregate` | yes | Domain layer — aggregate, value objects, events, repository interface |
 | `new-use-case.md` | `/new-use-case` | yes | Application layer — use case, command/query objects |
-| `new-repository.md` | `/new-repository` | yes | Infrastructure layer — JDBC repository + ResultSetExtractor |
+| `new-repository.md` | `/new-repository` | yes | Infrastructure layer — Spring Data JDBC repository + type converters |
 | `new-migration.md` | `/new-migration` | yes | Flyway SQL migration file |
 | `add-endpoint.md` | `/add-endpoint` | yes | Add one REST endpoint wired to a new use case |
 | `write-tests.md` | `/write-tests` | no | Full test suite for the current file |

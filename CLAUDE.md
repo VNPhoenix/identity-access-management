@@ -5,7 +5,7 @@
 - Spring Boot 3.5
 - Spring MVC (REST)
 - Spring Security 6
-- Spring JDBC (JdbcTemplate / NamedParameterJdbcTemplate) — no ORM, no Hibernate
+- Spring Data JDBC — repository interfaces, entity mapping, custom `@Query` SQL; no ORM
 - Maven (single module)
 - JUnit 5, Mockito, Testcontainers for testing
 
@@ -15,7 +15,7 @@
 - Primary keys: UUID (`gen_random_uuid()`) or Long (`BIGINT GENERATED ALWAYS AS IDENTITY`) — chosen per aggregate
 
 ## What NOT to use
-- No ORM (no Hibernate, no Spring Data JPA, no Spring Data JDBC)
+- No ORM (no Hibernate, no Spring Data JPA, no JPA annotations)
 
 ## Architecture
 Domain-Driven Design (DDD) with four layers:
@@ -38,7 +38,7 @@ generating or modifying any code.
 - `aggregates.md`           — aggregate design and boundaries
 - `application-layer.md`    — use cases, commands, queries
 - `infrastructure-layer.md` — JDBC repositories, config, adapters
-- `jdbc.md`                 — JdbcTemplate usage, SQL conventions
+- `spring-data-jdbc.md`     — Spring Data JDBC mapping, @Query conventions
 - `api-design.md`           — REST conventions, versioning, response shapes
 - `exception-handling.md`   — domain exceptions, global handler
 - `security.md`             — JWT, authorisation, secrets, input validation rules
@@ -52,7 +52,7 @@ All skills live in `.claude/skills/`. Claude uses these when writing or running 
 - `git.md`             — read history/diff, commit message format
 - `spring-rest.md`     — how to build REST controllers and filters
 - `spring-security.md` — SecurityFilterChain, JWT, method security
-- `spring-jdbc.md`     — JdbcTemplate, RowMapper, SQL conventions
+- `spring-data-jdbc.md` — Spring Data JDBC repository, entity mapping, @Query
 - `domain-modeling.md` — how to model aggregates, VOs, domain events
 - `testing.md`         — slice tests, unit tests, Testcontainers setup
 

@@ -19,8 +19,8 @@ rules they depend on.
 | `value-objects.md` | Records as value objects, validation, ID types | `domain/` |
 | `aggregates.md` | Aggregate roots, boundaries, factories, repository contract | `domain/` |
 | `application-layer.md` | Use cases, commands, queries, transaction ownership | `application/` |
-| `infrastructure-layer.md` | JDBC repositories, config, migrations, no-business-logic rule | `infrastructure/` |
-| `jdbc.md` | NamedParameterJdbcTemplate, SQL style, upsert, type conventions | `infrastructure/` |
+| `infrastructure-layer.md` | Spring Data JDBC repositories, config, migrations, no-business-logic rule | `infrastructure/` |
+| `spring-data-jdbc.md` | Spring Data JDBC mapping, @Query conventions, type converters | `infrastructure/`, `domain/` |
 | `api-design.md` | Versioning, HTTP verbs, status codes, request/response DTOs | `interface/` |
 | `exception-handling.md` | Exception hierarchy, global handler, error response shape | All layers |
 | `security.md` | JWT, authorisation, secrets, input validation, sensitive data rules | `interface/`, `infrastructure/` |
@@ -37,7 +37,7 @@ interface/   →   application/   →   domain/
 infrastructure/  ─────────────────────┘
 ```
 
-- `domain/` has zero Spring imports
+- `domain/` has zero Spring imports — pure Java only
 - `application/` may use `@Service`, `@Transactional`, `ApplicationEventPublisher`
-- `infrastructure/` implements domain interfaces using Spring JDBC
+- `infrastructure/` owns all Spring Data JDBC annotations via `{Aggregate}DbEntity` classes
 - `interface/` uses Spring MVC and Spring Security annotations

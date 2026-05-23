@@ -2,8 +2,17 @@
 
 This project is a simple implementation of an Identity Access Management (IAM) system. It allows you to manage users, roles, and permissions in a hierarchical structure.
 
+## Tech Stack
+- Java 21
+- Spring Boot 3.5
+- Spring MVC (REST)
+- Spring Security 6
+- Spring Data JDBC — repository interfaces, entity mapping; no ORM, no Hibernate
+- PostgreSQL 17
+- Flyway (SQL-based migrations)
+- JUnit 5, Mockito, Testcontainers
+
 ## Prerequisites
-- Spring Boot 3.5.13
 - Java 21
 - Maven 3.9+
 - Docker
@@ -45,7 +54,7 @@ Significant architectural choices are documented as ADRs in [`docs/adr/`](docs/a
 - Aggregates, factories & repositories: `.claude/rules/aggregates.md`
 - Use cases, commands & queries: `.claude/rules/application-layer.md`
 - Infrastructure layer rules: `.claude/rules/infrastructure-layer.md`
-- JDBC conventions & SQL style: `.claude/rules/jdbc.md`
+- Spring Data JDBC mapping & query conventions: `.claude/rules/spring-data-jdbc.md`
 - API design (versioning, HTTP verbs, DTOs): `.claude/rules/api-design.md`
 - Exception hierarchy & error responses: `.claude/rules/exception-handling.md`
 - Security (JWT, authorisation, secrets, input validation): `.claude/rules/security.md`

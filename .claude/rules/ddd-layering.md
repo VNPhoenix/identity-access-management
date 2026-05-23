@@ -18,7 +18,7 @@ com.example.{context}/
     repository/       ← repository interfaces (ports)
     service/          ← domain services (stateless domain logic)
   infrastructure/
-    persistence/      ← JDBC repository implementations
+    persistence/      ← DB entities, Spring Data JDBC repos, mappers, domain repo implementations
     config/           ← Spring @Configuration classes
     migration/        ← Flyway SQL files (resources)
 ```
@@ -35,7 +35,7 @@ infrastructure → application (for wiring only)
 - `domain` has zero Spring imports — pure Java only
 - `application` may import Spring `@Transactional` and `@Service` only
 - `interface` imports Spring MVC and Spring Security annotations
-- `infrastructure` imports Spring JDBC, Spring `@Repository`, and `@Configuration`
+- `infrastructure` imports Spring Data JDBC, Spring `@Repository`, and `@Configuration`; owns all persistence annotations
 
 ## Layer responsibilities
 
@@ -60,7 +60,9 @@ infrastructure → application (for wiring only)
 - No Spring annotations
 
 ### infrastructure
-- Implements domain repository interfaces using JDBC
-- Contains all SQL
+- Implements domain repository interfaces using Spring Data JDBC
+- Owns all Spring Data JDBC annotations via separate database entity classes (`{Aggregate}DbEntity`)
+- Maps between domain aggregates and database entities via mapper classes
+- Contains custom `@Query` SQL for complex queries
 - Contains Spring `@Configuration` and bean definitions
 - Never contains business logic

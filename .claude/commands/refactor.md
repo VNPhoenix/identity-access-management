@@ -10,12 +10,12 @@ Refactor the current file toward correct DDD structure: $ARGUMENTS
 - `.claude/rules/aggregates.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/never-do.md`
 
 ## Skills to use
 - `.claude/skills/domain-modeling.md`
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 - `.claude/skills/git.md`
 - `.claude/skills/maven.md`
 
@@ -46,9 +46,10 @@ Refactor the current file toward correct DDD structure: $ARGUMENTS
    - Split into focused single-responsibility use cases
    - Coordinate via domain events rather than direct calls
 
-   **Fix JDBC repository**
-   - Find setters used in ResultSetExtractor → replace with `reconstitute()` factory
-   - Find positional `?` params → replace with named parameters
+   **Fix Spring Data JDBC mapping**
+   - Find Spring Data annotations on domain classes → move to a new `{Aggregate}DbEntity` in infrastructure
+   - Find legacy `ResultSetExtractor` or `RowMapper` → replace with `{Aggregate}DbEntity` + `{Aggregate}DbMapper`
+   - Find positional `?` params in `@Query` → replace with named parameters
    - Find missing upsert → replace insert/update logic with ON CONFLICT
 
 3. Preserve all existing behaviour — this is structural only.

@@ -37,11 +37,11 @@ Explain the current file to a developer unfamiliar with this codebase.
    - What events it publishes
    - What it returns and why
 
-   **infrastructure/persistence/ — JDBC repository**
-   - Which domain repository interface it implements
-   - How `save()` works — upsert strategy, child collection handling
-   - How `findById()` works — join strategy, ResultSetExtractor usage
-   - How it maps database rows back to the aggregate via `reconstitute()`
+   **infrastructure/persistence/ — Spring Data JDBC**
+   - `{Aggregate}DbEntity` — which Spring Data annotations it uses and why
+   - `{Aggregate}DbRepository` — which queries it provides beyond inherited CRUD
+   - `{Aggregate}DbMapper` — how it converts DB entity → domain via `reconstitute()`
+   - `Jdbc{Aggregate}Repository` — how it bridges the domain interface to Spring Data JDBC
 
    **interface/controller/ — REST controller**
    - What resource it exposes and at what path
