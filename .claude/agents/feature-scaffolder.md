@@ -4,7 +4,7 @@ description: Use this agent to scaffold a complete vertical feature slice end-to
 tools: Read, Write, Edit, Bash
 ---
 
-You are a senior Java developer scaffolding features for a Java 21 / Spring Boot 3.5 IAM service using DDD, Spring JDBC, and Spring Security.
+You are a senior Java developer scaffolding features for a Java 21 / Spring Boot 3.5 IAM service using DDD, Spring Data JDBC, and Spring Security.
 
 ## Your rules (read all before generating any code)
 
@@ -15,7 +15,7 @@ You are a senior Java developer scaffolding features for a Java 21 / Spring Boot
 - `.claude/rules/aggregates.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`
 - `.claude/rules/security.md`
@@ -25,7 +25,7 @@ You are a senior Java developer scaffolding features for a Java 21 / Spring Boot
 
 - `.claude/skills/domain-modeling.md`
 - `.claude/skills/spring-rest.md`
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 - `.claude/skills/spring-security.md`
 
 ## Setup — discover project context
@@ -121,18 +121,30 @@ public class Create{Aggregate}UseCase {
 
 ### Layer 3 — Infrastructure
 
-**Jdbc{Aggregate}Repository.java** — `infrastructure/persistence/`
-- Implements `{Aggregate}Repository`
-- `@Repository`, constructor-injected `NamedParameterJdbcTemplate`
-- `save()` uses INSERT … ON CONFLICT DO UPDATE upsert
-- `findById()` uses `{Aggregate}ResultSetExtractor`
-- `toParams()` private method maps aggregate fields to `MapSqlParameterSource`
+**{Aggregate}DbEntity.java** — `infrastructure/persistence/`
+- Plain class with `@Table`, `@Id`, `@MappedCollection` — raw Java types only (UUID, Long, String)
+- UUID IDs: implements `Persistable<UUID>`; `@Transient boolean isNew` set by the mapper
+- Long IDs: `Long id` (null for new entities, DB-assigned) — no `Persistable` needed
+- Child DB entity class for each child entity collection
 
-**{Aggregate}ResultSetExtractor.java** — `infrastructure/persistence/`
-- Implements `ResultSetExtractor<List<{Aggregate}>>`
-- Groups rows by ID (use `LinkedHashMap` for insertion order)
-- Calls `{Aggregate}.reconstitute(...)` — never setters or public constructor
-- Handles optional child entity rows (check for null FK before appending)
+**{Aggregate}DbRepository.java** — `infrastructure/persistence/`
+- `@Repository`, extends `ListCrudRepository<{Aggregate}DbEntity, UUID>`
+- Custom `@Query` methods for pagination and filters; named params only
+
+**{Aggregate}DbMapper.java** — `infrastructure/persistence/`
+- `@Component`; converts `Order ↔ OrderDbEntity`
+- `toDomain()` calls `{Aggregate}.reconstitute(...)` — never setters
+- `toEntity()` sets `isNew = order.isNew()`
+
+**Jdbc{Aggregate}Repository.java** — `infrastructure/persistence/`
+- `@Repository`, implements `{Aggregate}Repository`
+- Constructor-injects `{Aggregate}DbRepository` and `{Aggregate}DbMapper`
+- `save()` → `mapper.toEntity()` → `dbRepository.save()`
+- `findById()` → `dbRepository.findById()` → `mapper.toDomain()`
+
+**Domain aggregate** — add `isNew()` pure Java method:
+- `private final boolean isNew` field — no Spring annotations
+- `create()` sets `isNew = true`; `reconstitute()` sets `isNew = false`
 
 ---
 

@@ -4,11 +4,11 @@ Generate a Flyway SQL migration for: $ARGUMENTS
 
 ## Rules to follow
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/never-do.md`
 
 ## Skills to use
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 - `.claude/skills/maven.md`
 
 ## Steps
@@ -62,8 +62,8 @@ Generate a Flyway SQL migration for: $ARGUMENTS
    -- Rollback: DROP TABLE IF EXISTS {table_name};
    ```
 
-5. Verify the `{Aggregate}ResultSetExtractor` column references still match
-   after this migration. Note any columns that need updating.
+5. Verify the `{Aggregate}DbEntity` field names and the `{Aggregate}DbMapper` raw column reads
+   still match the migration after the schema change. Note any fields that need updating.
 
 6. Run `mvn flyway:migrate` to apply and validate.
 

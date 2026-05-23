@@ -10,7 +10,7 @@ Review the current file for DDD correctness and Spring Boot best practices.
 - `.claude/rules/aggregates.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`
 - `.claude/rules/never-do.md`
@@ -18,7 +18,7 @@ Review the current file for DDD correctness and Spring Boot best practices.
 ## Skills to use
 - `.claude/skills/domain-modeling.md`
 - `.claude/skills/spring-rest.md`
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 - `.claude/skills/git.md`
 
 ## Steps
@@ -48,13 +48,12 @@ Review the current file for DDD correctness and Spring Boot best practices.
    - Throws domain exception when aggregate not found
 
    **infrastructure/persistence/**
-   - `NamedParameterJdbcTemplate` only — no positional `?`
-   - All SQL in text blocks with aligned keywords
-   - `save()` uses ON CONFLICT upsert
-   - `findById()` uses `ResultSetExtractor` for one-to-many joins
-   - `reconstitute()` factory used — never setters or public constructors
-   - `toParams()` extracts all parameter mapping
-   - Enums stored via `.name()`, UUIDs and Longs via `.value()`, Instants as TIMESTAMPTZ
+   - Spring Data JDBC annotations only on `{Aggregate}DbEntity` — domain aggregate has none
+   - `{Aggregate}DbRepository extends ListCrudRepository<{Aggregate}DbEntity, UUID>` — no custom `save()` or `findById()`
+   - `@Query` uses named parameters only — no positional `?`, SQL in text blocks
+   - UUID-ID DB entity implements `Persistable<UUID>` — `isNew` set from `aggregate.isNew()` in mapper
+   - `{Aggregate}DbMapper.toDomain()` calls `reconstitute()` — never setters on domain
+   - Enums stored via `.name()`, raw `UUID`/`Long` in DB entity fields, Instants as TIMESTAMPTZ
 
    **interface/controller/**
    - Constructor injection only

@@ -10,7 +10,7 @@ Scaffold a complete vertical feature slice for: $ARGUMENTS
 - `.claude/rules/aggregates.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`
 - `.claude/rules/never-do.md`
@@ -18,7 +18,7 @@ Scaffold a complete vertical feature slice for: $ARGUMENTS
 ## Skills to use
 - `.claude/skills/domain-modeling.md`
 - `.claude/skills/spring-rest.md`
-- `.claude/skills/spring-jdbc.md`
+- `.claude/skills/spring-data-jdbc.md`
 - `.claude/skills/maven.md`
 
 ## Steps — generate in this order
@@ -43,8 +43,11 @@ For the initial CRUD use cases:
 
 ### 3. Infrastructure layer
 Run `/new-repository $ARGUMENTS` steps:
-- `Jdbc{Aggregate}Repository.java`
-- `{Aggregate}ResultSetExtractor.java`
+- `{Aggregate}DbEntity.java` — Spring Data JDBC annotations on DB entity only
+- `{Aggregate}DbRepository.java` — extends `ListCrudRepository<{Aggregate}DbEntity, UUID>`
+- `{Aggregate}DbMapper.java` — domain ↔ DB entity conversion
+- `Jdbc{Aggregate}Repository.java` — implements domain repository interface
+- Add `isNew()` pure Java method to the domain aggregate
 
 ### 4. Migration
 Run `/new-migration` steps:

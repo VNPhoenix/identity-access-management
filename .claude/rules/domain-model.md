@@ -56,6 +56,7 @@ public record OrderPlaced(OrderId orderId, CustomerId customerId, Instant occurr
 ```
 
 ## No infrastructure in the domain
-- Zero Spring imports in `domain/`
-- No JDBC, no JPA annotations, no Jackson annotations
-- No `@Component`, `@Service`, `@Repository`
+- Zero Spring imports — pure Java only
+- No JPA, Spring Data, or Jackson annotations
+- No `@Component`, `@Service`, `@Repository`, `@Table`, `@Id`, `@MappedCollection`
+- Aggregates track newness with a plain `isNew()` method — no `Persistable` interface

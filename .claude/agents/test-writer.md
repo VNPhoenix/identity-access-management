@@ -25,7 +25,7 @@ Read the source file. Determine the test strategy from the package path:
 | `domain/model/` or `domain/event/` | Unit — no Spring, no mocks | JUnit 5, AssertJ |
 | `application/usecase/` | Unit — mock repositories | JUnit 5, Mockito, BDDMockito |
 | `interface/controller/` | Slice test | `@WebMvcTest`, `@MockBean`, MockMvc |
-| `infrastructure/persistence/` | Integration test | `@SpringBootTest`, Testcontainers PostgreSQL |
+| `domain/repository/` (Spring Data JDBC) | Integration test | `@SpringBootTest`, Testcontainers PostgreSQL |
 
 ### Step 2 — Write tests by layer
 
@@ -110,11 +110,11 @@ class {Controller}Test {
 }
 ```
 
-**JDBC Repository (Testcontainers)**
+**Spring Data JDBC Repository (Testcontainers)**
 ```java
 @SpringBootTest
 @Testcontainers
-class Jdbc{Aggregate}RepositoryTest {
+class {Aggregate}RepositoryTest {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17");
@@ -126,7 +126,7 @@ class Jdbc{Aggregate}RepositoryTest {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-    @Autowired Jdbc{Aggregate}Repository repository;
+    @Autowired {Aggregate}Repository repository;
 
     @Test
     @DisplayName("findById returns aggregate after save")

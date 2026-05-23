@@ -3,8 +3,9 @@
 Hard stops. If any of the following is about to happen, stop and flag the issue first.
 
 ## Domain layer
-- Never add Spring annotations to domain classes (`@Component`, `@Service`, `@Repository`, etc.)
-- Never add JDBC, JPA, or Jackson annotations to domain classes
+- Never add any Spring annotations to domain classes — zero Spring imports
+- Never add JPA, Spring Data, or Jackson annotations to domain classes (`@Table`, `@Id`, `@MappedCollection`, `@Component`, `@Service`, `@Repository`, etc.)
+- Never implement `Persistable` or any Spring interface in a domain class
 - Never use setters on aggregates or entities — use named domain methods
 - Never expose mutable internal collections — return unmodifiable views
 - Never reference another aggregate by object — use ID reference only
@@ -19,10 +20,13 @@ Hard stops. If any of the following is about to happen, stop and flag the issue 
 - Never span two aggregate transactions in one use case
 
 ## Infrastructure layer
-- Never put business logic in a JDBC repository implementation
-- Never use positional `?` parameters — always use named parameters
+- Never put business logic in a repository or mapper
+- Never place Spring Data annotations (`@Table`, `@Id`, `@MappedCollection`) on domain classes — only on `{Aggregate}DbEntity` classes
+- Never use positional `?` parameters in `@Query` — always use named `:param`
 - Never concatenate user input into SQL strings
-- Never call domain constructors directly in `RowMapper` — use `reconstitute()` factory
+- Never write a custom `save()` or `findById()` in `{Aggregate}DbRepository` — inherit from `ListCrudRepository`
+- Never use `JdbcTemplate` or `NamedParameterJdbcTemplate` directly
+- Mapper must call `reconstitute()` — never setters or public constructors on domain objects
 
 ## Interface layer
 - Never return a domain object directly from a controller — map to a response DTO
@@ -42,6 +46,6 @@ Hard stops. If any of the following is about to happen, stop and flag the issue 
 - Never hardcode secrets, API keys, or passwords
 - Never log passwords, tokens, or PII
 - Never expose stack traces in API responses
-- Never use `spring.jpa.hibernate.ddl-auto` — this project uses JDBC and Flyway only
+- Never use `spring.jpa.hibernate.ddl-auto` — this project uses Spring Data JDBC and Flyway only
 - Never write a migration that is not idempotent
 - Never pin a Maven dependency to `LATEST` or `RELEASE`

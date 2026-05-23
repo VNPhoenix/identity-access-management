@@ -2,79 +2,171 @@
 
 ## Responsibilities
 - Implements repository interfaces defined in the domain layer
-- Contains all JDBC and SQL code
-- Contains Spring @Configuration and bean wiring
+- Owns all Spring Data JDBC annotations via separate database entity classes
+- Contains mappers that convert between domain aggregates and database entities
+- Contains Spring `@Configuration` and bean wiring
 - Contains Flyway migration files
 - No business logic
 
-## Repository implementation
+## Four-part pattern per aggregate
+
+Each aggregate requires four infrastructure classes:
+
+### 1. Database entity — `{Aggregate}DbEntity`
+
+Plain class with Spring Data JDBC mapping annotations. Lives in `infrastructure/persistence/`. No domain logic.
+
+```java
+@Table("orders")
+class OrderDbEntity implements Persistable<UUID> {
+
+    @Id UUID id;
+    UUID customerId;
+    String status;
+    BigDecimal totalAmount;
+    String currency;
+    Instant createdAt;
+    Instant updatedAt;
+
+    @MappedCollection(idColumn = "order_id")
+    List<OrderLineDbEntity> lines = new ArrayList<>();
+
+    @Transient boolean isNew;
+
+    @Override public UUID getId()   { return id; }
+    @Override public boolean isNew() { return isNew; }
+}
+```
+
+- Uses raw Java types (`UUID`, `Long`, `String`) — no domain value objects
+- `implements Persistable<UUID>` required for UUID IDs (always non-null) — `isNew` flag set by the mapper
+- Long-based IDs: `Long id` (null for new entities, DB-assigned on insert) — no `Persistable` needed
+- `@Transient` on `isNew` — not persisted
+
+### 2. Spring Data JDBC repository — `{Aggregate}DbRepository`
+
+Extends `ListCrudRepository<{Aggregate}DbEntity, UUID>`. Lives in `infrastructure/persistence/`.
+
+```java
+@Repository
+interface OrderDbRepository extends ListCrudRepository<OrderDbEntity, UUID> {
+
+    @Query("""
+        SELECT * FROM orders
+        WHERE customer_id = :customerId
+        ORDER BY created_at DESC
+        LIMIT :limit OFFSET :offset
+        """)
+    List<OrderDbEntity> findPageByCustomerId(@Param("customerId") UUID customerId,
+                                              @Param("limit") int limit,
+                                              @Param("offset") long offset);
+
+    @Query("SELECT COUNT(*) FROM orders WHERE customer_id = :customerId")
+    long countByCustomerId(@Param("customerId") UUID customerId);
+}
+```
+
+### 3. Mapper — `{Aggregate}DbMapper`
+
+Converts between domain aggregate and database entity. Lives in `infrastructure/persistence/`.
+
+```java
+@Component
+class OrderDbMapper {
+
+    Order toDomain(OrderDbEntity entity) {
+        return Order.reconstitute(
+            OrderId.of(entity.id),
+            CustomerId.of(entity.customerId),
+            OrderStatus.valueOf(entity.status),
+            entity.lines.stream().map(this::toLine).toList(),
+            entity.createdAt
+        );
+    }
+
+    OrderDbEntity toEntity(Order order) {
+        var entity = new OrderDbEntity();
+        entity.id         = order.id().value();
+        entity.customerId = order.customerId().value();
+        entity.status     = order.status().name();
+        entity.totalAmount = order.total().amount();
+        entity.currency   = order.total().currency().getCurrencyCode();
+        entity.createdAt  = order.createdAt();
+        entity.updatedAt  = Instant.now();
+        entity.lines      = order.lines().stream().map(this::toLineEntity).toList();
+        entity.isNew      = order.isNew();
+        return entity;
+    }
+
+    private OrderLine toLine(OrderLineDbEntity e) { ... }
+    private OrderLineDbEntity toLineEntity(OrderLine l) { ... }
+}
+```
+
+- Calls `{Aggregate}.reconstitute(...)` — never constructors, never setters
+- Passes `order.isNew()` to the DB entity so Spring Data JDBC can distinguish insert from update
+
+### 4. Repository implementation — `Jdbc{Aggregate}Repository`
+
+Implements the domain repository interface. Lives in `infrastructure/persistence/`.
 
 ```java
 @Repository
 @RequiredArgsConstructor
-public class JdbcOrderRepository implements OrderRepository {
+class JdbcOrderRepository implements OrderRepository {
 
-    private final NamedParameterJdbcTemplate jdbc;
-    private final OrderRowMapper rowMapper;
+    private final OrderDbRepository dbRepository;
+    private final OrderDbMapper mapper;
 
     @Override
     public void save(Order order) {
-        // upsert pattern — insert or update
-        var sql = """
-            INSERT INTO orders (id, customer_id, status, total_amount, currency, created_at, updated_at)
-            VALUES (:id, :customerId, :status, :totalAmount, :currency, :createdAt, :updatedAt)
-            ON CONFLICT (id) DO UPDATE SET
-                status = EXCLUDED.status,
-                total_amount = EXCLUDED.total_amount,
-                updated_at = EXCLUDED.updated_at
-            """;
-        jdbc.update(sql, toParams(order));
-        saveLines(order);
+        dbRepository.save(mapper.toEntity(order));
     }
 
     @Override
     public Optional<Order> findById(OrderId id) {
-        var sql = """
-            SELECT o.*, ol.*
-            FROM orders o
-            LEFT JOIN order_lines ol ON ol.order_id = o.id
-            WHERE o.id = :id
-            """;
-        var params = Map.of("id", id.value());
-        var orders = jdbc.query(sql, params, rowMapper);
-        return orders.isEmpty() ? Optional.empty() : Optional.of(orders.get(0));
-    }
-
-    private MapSqlParameterSource toParams(Order order) {
-        return new MapSqlParameterSource()
-            .addValue("id", order.id().value())
-            .addValue("customerId", order.customerId().value())
-            .addValue("status", order.status().name())
-            .addValue("totalAmount", order.total().amount())
-            .addValue("currency", order.total().currency().getCurrencyCode())
-            .addValue("createdAt", order.createdAt())
-            .addValue("updatedAt", Instant.now());
+        return dbRepository.findById(id.value()).map(mapper::toDomain);
     }
 }
 ```
 
-## RowMapper
-- One `RowMapper<Aggregate>` per aggregate root
-- Use the aggregate's `reconstitute()` factory method to rebuild — never call constructors directly
-- Handle joins by grouping rows (use `ResultSetExtractor` for one-to-many)
+## Domain aggregate — `isNew()` without Spring
+
+The domain aggregate tracks whether it was newly created (not a Spring concern):
+
+```java
+public class Order {
+
+    private final boolean isNew;
+
+    public static Order create(CustomerId customerId) {
+        return new Order(OrderId.generate(), customerId, ..., true);
+    }
+
+    public static Order reconstitute(OrderId id, CustomerId customerId, ...) {
+        return new Order(id, customerId, ..., false);
+    }
+
+    public boolean isNew() { return isNew; }
+}
+```
+
+Pure Java — no Spring annotations, no `Persistable` interface on the domain class.
 
 ## Configuration
-- All bean definitions in `@Configuration` classes under `infrastructure/config/`
-- `DataSource`, `JdbcTemplate`, `NamedParameterJdbcTemplate` configured here
-- Security config (`SecurityFilterChain`) lives here
+- `DataSource` auto-configured by Spring Boot — no `JdbcConfig` needed for simple setups
+- Security config (`SecurityFilterChain`) lives in `infrastructure/config/`
+- Enums stored via `.name()`, Instants as `TIMESTAMPTZ`
 
 ## Flyway migrations
 - Files in `src/main/resources/db/migration/`
 - Naming: `V{version}__{snake_case_description}.sql`
 - Every migration is idempotent where possible
-- Each new table includes: `id` (UUID or `BIGINT GENERATED ALWAYS AS IDENTITY`) `PRIMARY KEY`, `created_at TIMESTAMPTZ`, `updated_at TIMESTAMPTZ`
+- Each new table: `id` (UUID or `BIGINT GENERATED ALWAYS AS IDENTITY`) `PRIMARY KEY`, `created_at TIMESTAMPTZ`, `updated_at TIMESTAMPTZ`
 
 ## Rules
+- Spring Data JDBC annotations (`@Table`, `@Id`, `@MappedCollection`, `@Transient`, `@PersistenceCreator`) only on database entity classes — never on domain classes
+- Mapper always calls `reconstitute()` — never setters or public constructors on domain objects
+- Domain repository interface stays in `domain/repository/` as a plain Java interface — never extends Spring interfaces
 - Infrastructure classes never imported by domain or application layers
-- No business logic in repository implementations
-- All SQL in the infrastructure layer — no SQL strings in application or domain
+- No business logic in mappers or repository implementations

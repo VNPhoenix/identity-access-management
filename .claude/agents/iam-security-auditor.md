@@ -12,7 +12,7 @@ You are a security auditor specializing in Identity and Access Management system
 - `.claude/rules/never-do.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/application-layer.md`
 
 Also read `.claude/skills/spring-security.md`.
@@ -50,7 +50,7 @@ Also read `.claude/skills/spring-security.md`.
 ### 4. Input validation and injection
 
 - [ ] `@Valid` on every `@RequestBody` in controllers
-- [ ] All SQL uses named parameters via `NamedParameterJdbcTemplate` — no string concatenation
+- [ ] All custom SQL uses named parameters via `@Query` — no string concatenation
 - [ ] Value objects validate input in compact constructor — reject at the boundary
 - [ ] No user-controlled data used in dynamic class loading, reflection, or JNDI
 

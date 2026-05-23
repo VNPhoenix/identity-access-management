@@ -9,7 +9,7 @@ You are a database migration reviewer for a PostgreSQL 17 schema managed by Flyw
 ## Your rules (read before validating)
 
 - `.claude/rules/infrastructure-layer.md` (Flyway section)
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/never-do.md`
 
 ## Process

@@ -16,7 +16,7 @@ Read every rule file listed below from the project root before you start:
 - `.claude/rules/aggregates.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/infrastructure-layer.md`
-- `.claude/rules/jdbc.md`
+- `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`
 - `.claude/rules/security.md`
@@ -55,13 +55,13 @@ Read every rule file listed below from the project root before you start:
    - Throws domain exception when aggregate not found
 
    **Infrastructure layer**
-   - `NamedParameterJdbcTemplate` only — no positional `?` parameters
-   - All SQL in text blocks with aligned keywords
-   - `save()` uses INSERT … ON CONFLICT DO UPDATE upsert
-   - `findById()` uses `ResultSetExtractor` for one-to-many joins
-   - `reconstitute()` factory used — never setters or public constructors
-   - `toParams()` private method extracts all parameter mapping
-   - Enums stored via `.name()`, UUIDs and Longs via `.value()`, Instants as TIMESTAMPTZ
+   - `{Aggregate}DbEntity` carries all Spring Data annotations — domain aggregate has none
+   - `{Aggregate}DbRepository extends ListCrudRepository<{Aggregate}DbEntity, UUID>` — no manual `save()` or `findById()`
+   - Custom queries use `@Query` with named parameters — never positional `?`
+   - `{Aggregate}DbMapper.toDomain()` calls `reconstitute()` — never setters or public constructors on domain
+   - `{Aggregate}DbMapper.toEntity()` sets `isNew = order.isNew()`
+   - UUID-ID DB entity implements `Persistable<UUID>` — `isNew` flag; Long-ID DB entity needs no `Persistable`
+   - `Jdbc{Aggregate}Repository implements {Aggregate}Repository` — delegates to `DbRepository` + `DbMapper`
 
    **Interface layer**
    - Constructor injection only
