@@ -2,7 +2,7 @@
 
 ## When to use
 Read git state before reviewing, debugging, or refactoring to understand context.
-Only commit when the user explicitly asks.
+Only commit when the user explicitly asks. Never push, force-push, or rewrite history (rebase/reset) on the user's behalf.
 
 ## Useful reads
 
@@ -27,7 +27,7 @@ IAM-X (type): short description
 **Subject line**: `IAM-X (type): description`
 - Extract the JIRA ticket number from the current branch name (e.g. branch `IAM-7-Add-user-registration` → `IAM-7`)
 - Type in parentheses — see table below
-- Description: lowercase, imperative mood, no trailing period
+- Description: lowercase imperative mood, no trailing period; proper nouns and acronyms may keep their standard casing (e.g. Spring Boot, JWT)
 
 **Body** (include when the commit touches multiple files or needs context):
 - Blank line between subject and body
@@ -73,7 +73,7 @@ IAM-4 (fix): correct security bugs and stale versions in skills
 ## Branch naming
 
 ```
-IAM-X-Short-Description-In-Title-Case
+IAM-X-First-word-then-lowercase-words
 
 Examples:
   IAM-7-Add-user-registration
