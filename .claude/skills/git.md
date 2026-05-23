@@ -2,7 +2,7 @@
 
 ## When to use
 Read git state before reviewing, debugging, or refactoring to understand context.
-Git is read-only — never commit, push, or modify history on behalf of the user.
+Only commit when the user explicitly asks. Never push, force-push, or rewrite history (rebase/reset) on the user's behalf.
 
 ## Useful reads
 
@@ -14,33 +14,98 @@ Git is read-only — never commit, push, or modify history on behalf of the user
 | Check branch state | `git status` / `git branch` |
 | Find who changed a line | `git blame <file>` |
 
-## Commit message convention
-All commits follow Conventional Commits:
+## Commit message format
 
 ```
-type(scope): short description
+IAM-X (type): short description
 
-Types:  feat | fix | refactor | test | docs | chore
-Scope:  bounded context or module (orders, customers, payments)
+- file-or-topic: what changed; additional detail after semicolon
+- file-or-topic: what changed
+  continuation indented two spaces
+```
 
-Examples:
-  feat(orders): add place order use case
-  fix(orders): correct total calculation in OrderLine
-  refactor(customers): extract Email value object
-  test(orders): add Testcontainers repository integration test
-  chore(deps): bump Spring Boot to 3.5.1
-  docs(orders): document aggregate boundary decisions
+**Subject line**: `IAM-X (type): description`
+- Extract the JIRA ticket number from the current branch name (e.g. branch `IAM-7-Add-user-registration` → `IAM-7`)
+- Type in parentheses — see table below
+- Description: lowercase imperative mood, no trailing period; proper nouns and acronyms may keep their standard casing (e.g. Spring Boot, JWT)
+
+**Body** (include when the commit touches multiple files or needs context):
+- Blank line between subject and body
+- One bullet per file or topic: `- filename: what changed`
+- Semicolons separate sub-items on the same bullet; indent continuation lines two spaces
+
+**No `Co-Authored-By` trailer** — never add a co-author line
+
+### Types
+
+| Type | When to use |
+|---|---|
+| `feat` | New feature or capability |
+| `fix` | Bug fix |
+| `docs` | Documentation, rules, skills, ADRs |
+| `chore` | Dependencies, build config, maintenance |
+| `config` | Settings, permissions, environment |
+| `refactoring` | Code restructuring without behaviour change |
+| `init` | First commit of a new module or bounded context |
+| `test` | Tests only |
+
+### Examples — subject only
+
+```
+IAM-7 (feat): add user registration use case
+IAM-7 (fix): correct password hashing in UserFactory
+IAM-7 (docs): document aggregate boundary for User and Role
+IAM-7 (chore): bump Spring Boot to 3.5.2
+IAM-7 (refactoring): extract Email value object from User aggregate
+```
+
+### Example — with body
+
+```
+IAM-4 (fix): correct security bugs and stale versions in skills
+
+- spring-security: JWT filter now catches ParseException/JOSEException and
+  returns 401 instead of propagating 500; loads roles into GrantedAuthority
+- testing: update Testcontainers image from postgres:16 to postgres:17
+- maven: remove --enable-preview from compiler template
 ```
 
 ## Branch naming
+
 ```
-feature/{scope}-{short-description}   → feature/orders-place-order
-fix/{scope}-{short-description}       → fix/orders-total-calculation
-chore/{description}                   → chore/bump-spring-boot
+IAM-X-First-word-then-lowercase-words
+
+Examples:
+  IAM-7-Add-user-registration
+  IAM-8-Fix-jwt-token-expiry
 ```
+
+## Separating commits
+
+Split changes into multiple commits when they serve different purposes, even if they touch the same feature. A good split lets each commit be understood, reviewed, and reverted independently.
+
+**Split by type** — different `type` labels always go in separate commits:
+```
+IAM-7 (chore): add spring-boot-starter-data-jdbc dependency   ← pom.xml only
+IAM-7 (docs): update rules and skills for Spring Data JDBC    ← .claude/ files
+IAM-7 (feat): implement OrderDbEntity and JdbcOrderRepository ← src/ files
+```
+
+**Split by concern** — within the same type, separate unrelated changes:
+```
+IAM-7 (docs): add spring-data-jdbc rule and skill             ← new files
+IAM-7 (docs): update agents and commands for Spring Data JDBC ← existing files updated
+```
+
+**Keep together** — changes that are only meaningful as a unit belong in one commit:
+```
+IAM-7 (feat): add Email value object with validation          ← Email.java + test
+```
+
+**How to stage selectively** — use `git add <specific files>` rather than `git add .` to control what goes into each commit.
 
 ## Rules
 - Never commit to `main` or `develop` directly
-- One logical change per commit
+- One logical change per commit — split by type or concern when in doubt
 - Never include `.env`, build output, or generated files
-- When suggesting a commit message, always follow the convention above
+- Never add `Co-Authored-By` trailers
