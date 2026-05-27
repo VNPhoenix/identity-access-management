@@ -5,6 +5,7 @@ Scaffold a complete vertical feature slice for: $ARGUMENTS
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/domain-model.md`
 - `.claude/rules/value-objects.md`
 - `.claude/rules/aggregates.md`
@@ -13,6 +14,7 @@ Scaffold a complete vertical feature slice for: $ARGUMENTS
 - `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`
+- `.claude/rules/security.md`
 - `.claude/rules/never-do.md`
 
 ## Skills to use

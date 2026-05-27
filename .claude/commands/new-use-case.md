@@ -5,6 +5,7 @@ Scaffold a use case (application service) for: $ARGUMENTS
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/exception-handling.md`
 - `.claude/rules/security.md`

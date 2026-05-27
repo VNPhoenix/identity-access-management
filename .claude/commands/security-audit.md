@@ -4,6 +4,7 @@ Audit the current file for security vulnerabilities.
 
 ## Rules to follow
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/application-layer.md`
 - `.claude/rules/api-design.md`
 - `.claude/rules/exception-handling.md`

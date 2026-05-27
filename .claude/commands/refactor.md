@@ -5,6 +5,7 @@ Refactor the current file toward correct DDD structure: $ARGUMENTS
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/domain-model.md`
 - `.claude/rules/value-objects.md`
 - `.claude/rules/aggregates.md`
