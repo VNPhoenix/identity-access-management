@@ -18,7 +18,7 @@
 - No ORM (no Hibernate, no Spring Data JPA, no JPA annotations)
 
 ## Architecture
-Domain-Driven Design (DDD) with four layers:
+Domain-Driven Design (DDD) with four layers per bounded context:
 
 ```
 interface/        ← controllers, request/response DTOs, exception handlers
@@ -27,12 +27,24 @@ domain/           ← aggregates, entities, value objects, domain services, repo
 infrastructure/   ← repository implementations (JDBC), Spring config, Flyway migrations
 ```
 
+Bounded contexts (see `docs/domain-map.md` for full domain classification):
+
+| Context | Type | Package |
+|---|---|---|
+| Identity | Core | `org.vnphoenix.identity` |
+| Authorization | Core | `org.vnphoenix.authorization` |
+| Authentication | Supporting | `org.vnphoenix.authentication` |
+| Audit | Supporting | `org.vnphoenix.audit` |
+| Notification | Generic | `org.vnphoenix.notification` |
+| Token Infrastructure | Generic (infra only) | `org.vnphoenix.infrastructure.security` |
+
 ## Rules
 All rules live in `.claude/rules/`. Claude must follow every rule file before
 generating or modifying any code.
 
 - `code-style.md`           — Java 21 style, naming, immutability
 - `ddd-layering.md`         — layer responsibilities and dependency rules
+- `domain-design.md`        — bounded context classification, cross-context integration, ACL rules
 - `domain-model.md`         — aggregates, entities, domain rules
 - `value-objects.md`        — how to model value objects
 - `aggregates.md`           — aggregate design and boundaries
@@ -74,3 +86,9 @@ and skills it depends on.
 - `refactor.md`           — structural refactoring toward DDD
 - `debug.md`              — diagnose a described runtime issue
 - `explain.md`            — explain the current file to a new developer
+
+## Documentation
+All documentation lives in `docs/`.
+
+- `docs/domain-map.md`  — strategic domain classification, bounded context map, package layout
+- `docs/adr/`           — Architecture Decision Records index and entries
