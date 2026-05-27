@@ -3,7 +3,7 @@
 ## Layer structure
 
 ```
-com.example.{context}/
+org.vnphoenix.{context}/
   interface/
     controller/       ← REST controllers
     dto/              ← request and response records
