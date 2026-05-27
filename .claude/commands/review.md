@@ -5,6 +5,7 @@ Review the current file for DDD correctness and Spring Boot best practices.
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/domain-model.md`
 - `.claude/rules/value-objects.md`
 - `.claude/rules/aggregates.md`

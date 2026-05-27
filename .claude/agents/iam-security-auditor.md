@@ -14,6 +14,7 @@ You are a security auditor specializing in Identity and Access Management system
 - `.claude/rules/exception-handling.md`
 - `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/application-layer.md`
+- `.claude/rules/domain-design.md`
 
 Also read `.claude/skills/spring-security.md`.
 
@@ -74,6 +75,18 @@ Also read `.claude/skills/spring-security.md`.
 - [ ] Password hashes never included in any response DTO
 - [ ] Raw JWT secret never serialized
 - [ ] Response DTOs contain only what the caller needs — audit fields omitted where not required
+
+### 8. Bounded context isolation
+
+- [ ] No bounded context imports domain classes from another context's package
+      (e.g. Authentication must not import `User` from `org.vnphoenix.identity.domain`)
+- [ ] Cross-context reads go through an ACL translator in `infrastructure/acl/` —
+      never direct repository access across context boundaries
+- [ ] Domain events crossing context boundaries carry only primitive IDs —
+      never the upstream aggregate or its value objects
+- [ ] Authentication context reads Identity data only through its own domain
+      repository interface (backed by JDBC against the upstream table) — never
+      through Identity's repository directly
 
 ## Output format
 

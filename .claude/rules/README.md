@@ -15,6 +15,7 @@ rules they depend on.
 |---|---|---|
 | `code-style.md` | Java 21 features, naming, immutability, size limits | All layers |
 | `ddd-layering.md` | Layer responsibilities, dependency direction, package structure | All layers |
+| `domain-design.md` | Bounded context classification, cross-context integration, ACL rules | All contexts |
 | `domain-model.md` | Entities, domain methods, domain events, no-Spring rule | `domain/` |
 | `value-objects.md` | Records as value objects, validation, ID types | `domain/` |
 | `aggregates.md` | Aggregate roots, boundaries, factories, repository contract | `domain/` |
@@ -41,3 +42,17 @@ infrastructure/  ─────────────────────
 - `application/` may use `@Service`, `@Transactional`, `ApplicationEventPublisher`
 - `infrastructure/` owns all Spring Data JDBC annotations via `{Aggregate}DbEntity` classes
 - `interface/` uses Spring MVC and Spring Security annotations
+
+## Bounded context dependency direction
+
+```
+Authentication  →  Identity        (reads credentials via ACL)
+Authentication  →  Authorization   (reads role assignments via ACL)
+Audit           ←  Identity        (consumes domain events, conformist)
+Audit           ←  Authorization   (consumes domain events, conformist)
+Audit           ←  Authentication  (consumes domain events, conformist)
+Notification    ←  Identity        (consumes domain events, customer/supplier)
+Notification    ←  Authentication  (consumes domain events, customer/supplier)
+```
+
+See `docs/domain-map.md` for the full context map and integration pattern descriptions.

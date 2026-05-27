@@ -105,7 +105,7 @@ class OrderControllerTest {
 class JdbcOrderRepositoryTest {
 
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {

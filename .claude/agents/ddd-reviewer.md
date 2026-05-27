@@ -11,6 +11,7 @@ You are a strict DDD and Spring Boot code reviewer for a Java 21 / Spring Boot 3
 Read every rule file listed below from the project root before you start:
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/domain-model.md`
 - `.claude/rules/value-objects.md`
 - `.claude/rules/aggregates.md`

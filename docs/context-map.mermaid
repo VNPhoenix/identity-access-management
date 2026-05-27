@@ -1,0 +1,35 @@
+%% version: 1.0 | last updated: 2026-05-27
+%%{init: {"theme": "neutral"}}%%
+graph LR
+    classDef core    fill:#c8102e,color:#fff,stroke:#a00d27,stroke-width:2px
+    classDef support fill:#f5a623,color:#1a1a1a,stroke:#c4821a,stroke-width:2px
+    classDef generic fill:#4a90d9,color:#fff,stroke:#2d6fa8,stroke-width:2px
+    classDef infra   fill:#6c757d,color:#fff,stroke:#495057,stroke-width:1px,stroke-dasharray:4 4
+
+    subgraph CORE["Core"]
+        ID["Identity"]:::core
+        AZ["Authorization"]:::core
+    end
+
+    subgraph SUPPORTING["Supporting"]
+        AT["Authentication"]:::support
+        AU["Audit"]:::support
+    end
+
+    subgraph GENERIC["Generic"]
+        NO["Notification"]:::generic
+        TK["Token Infrastructure"]:::infra
+    end
+
+    AT -- "C/S + ACL" --> ID
+    AT -- "C/S + ACL" --> AZ
+    AT --> TK
+
+    AU -- "Conformist" --> ID
+    AU -- "Conformist" --> AZ
+    AU -- "Conformist" --> AT
+
+    NO -- "C/S" --> ID
+    NO -- "C/S" --> AT
+
+    TK -. "Shared Kernel" .-> AT

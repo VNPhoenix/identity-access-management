@@ -10,6 +10,7 @@ You are a senior Java developer scaffolding features for a Java 21 / Spring Boot
 
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
+- `.claude/rules/domain-design.md`
 - `.claude/rules/domain-model.md`
 - `.claude/rules/value-objects.md`
 - `.claude/rules/aggregates.md`
