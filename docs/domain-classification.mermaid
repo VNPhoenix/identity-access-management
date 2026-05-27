@@ -1,0 +1,21 @@
+%% version: 1.0 | last updated: 2026-05-27
+%%{init: {"theme": "neutral"}}%%
+graph TB
+    classDef core    fill:#c8102e,color:#fff,stroke:#a00d27,stroke-width:2px
+    classDef support fill:#f5a623,color:#1a1a1a,stroke:#c4821a,stroke-width:2px
+    classDef generic fill:#4a90d9,color:#fff,stroke:#2d6fa8,stroke-width:2px
+
+    subgraph CORE["Core Domains — competitive differentiators"]
+        ID["Identity\nUser lifecycle · Profile · Credentials"]:::core
+        AZ["Authorization\nRBAC · Roles · Permissions · Access decisions"]:::core
+    end
+
+    subgraph SUPPORTING["Supporting Domains — necessary enablers"]
+        AT["Authentication\nCredential validation · JWT lifecycle · Lockout"]:::support
+        AU["Audit\nImmutable event trail · Compliance log"]:::support
+    end
+
+    subgraph GENERIC["Generic Domains — commodity capabilities"]
+        NO["Notification\nEmail delivery · Security alerts"]:::generic
+        TK["Token Infrastructure\nJWT signing · Cryptography · Key management"]:::generic
+    end
