@@ -2,6 +2,29 @@
 
 Audit the current file for security vulnerabilities.
 
+## Usage
+
+```
+/security-audit
+```
+
+No arguments. Open the file to audit, then run this command.
+
+**When to use:** Before merging any auth-related code, after adding or changing an endpoint, or when touching JWT handling or role checks. For a full pre-merge IAM audit across multiple files, prefer the `iam-security-auditor` agent.
+
+## Examples
+
+```
+# Open JwtAuthFilter.java, then:
+/security-audit
+
+# Open UserController.java, then:
+/security-audit
+
+# Open SecurityConfig.java, then:
+/security-audit
+```
+
 ## Rules to follow
 - `.claude/rules/ddd-layering.md`
 - `.claude/rules/domain-design.md`

@@ -2,6 +2,29 @@
 
 Scaffold a use case (application service) for: $ARGUMENTS
 
+## Usage
+
+```
+/new-use-case <business operation> [for <aggregate name>] [read only]
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<business operation>` | Plain-English action (e.g. "Place order", "Revoke refresh token") | Yes |
+| `<aggregate name>` | The aggregate this use case operates on | No |
+| `read only` | Literal text — signals this is a query use case, not a command | No |
+
+**When to use:** Adding a new application service after the domain aggregate already exists. Use for each distinct business operation beyond the CRUD baseline scaffolded by `/new-feature`.
+
+## Examples
+
+```
+/new-use-case Place order for the Order aggregate
+/new-use-case Get user by ID — read only
+/new-use-case Revoke refresh token for the RefreshToken aggregate
+/new-use-case List active roles paginated — read only
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`

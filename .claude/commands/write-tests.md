@@ -2,6 +2,29 @@
 
 Write the full test suite for the current file.
 
+## Usage
+
+```
+/write-tests
+```
+
+No arguments. Open the file you want tested, then run this command. Claude identifies the layer from the package path and selects the correct test strategy automatically (unit, Mockito, `@WebMvcTest`, or Testcontainers).
+
+**When to use:** After writing or substantially changing a class. Generates the full test suite in one shot. For a single missing scenario on an existing test file, use `/add-test-case` instead.
+
+## Examples
+
+```
+# Open UserController.java, then:
+/write-tests
+
+# Open PlaceOrderUseCase.java, then:
+/write-tests
+
+# Open JdbcUserRepository.java, then:
+/write-tests
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/testing.md`

@@ -2,6 +2,30 @@
 
 Add a new REST endpoint for: $ARGUMENTS
 
+## Usage
+
+```
+/add-endpoint <HTTP verb> <path> [<request / response shape>] [<authorization>]
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<HTTP verb>` | GET, POST, PUT, PATCH, or DELETE | Yes |
+| `<path>` | Full versioned path (e.g. `/api/v1/users/{id}`) | Yes |
+| `<request / response shape>` | What the request body carries and what the response returns | No |
+| `<authorization>` | Access requirement (admin only, owner only, public) | No |
+
+**When to use:** Adding a single new REST endpoint to an existing controller and wiring it to a new use case. Use `/new-feature` instead if the resource (controller, domain aggregate) does not yet exist.
+
+## Examples
+
+```
+/add-endpoint POST /api/v1/users to create a user with email and password — returns 201
+/add-endpoint GET /api/v1/users/{id} returning user details — 200 or 404
+/add-endpoint DELETE /api/v1/roles/{id} admin only — returns 204
+/add-endpoint PATCH /api/v1/users/{id}/deactivate — owner or admin
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`

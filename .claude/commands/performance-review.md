@@ -2,6 +2,29 @@
 
 Audit the current file for performance issues.
 
+## Usage
+
+```
+/performance-review
+```
+
+No arguments. Open the file to audit, then run this command.
+
+**When to use:** When a query is slow, before merging code that touches JDBC repositories, or when adding list or pagination endpoints. Most valuable on `{Aggregate}DbRepository` and use case files that load collections.
+
+## Examples
+
+```
+# Open UserDbRepository.java, then:
+/performance-review
+
+# Open ListUsersUseCase.java, then:
+/performance-review
+
+# Open RoleController.java, then:
+/performance-review
+```
+
 ## Rules to follow
 - `.claude/rules/spring-data-jdbc.md`
 - `.claude/rules/infrastructure-layer.md`

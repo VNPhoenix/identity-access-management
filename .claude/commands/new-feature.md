@@ -2,6 +2,28 @@
 
 Scaffold a complete vertical feature slice for: $ARGUMENTS
 
+## Usage
+
+```
+/new-feature <aggregate name> [in <bounded context>] [<key behaviors or fields>]
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<aggregate name>` | PascalCase name of the new aggregate (e.g. `User`, `Order`) | Yes |
+| `<bounded context>` | Which context this belongs to (e.g. `in the Identity context`) | No |
+| `<key behaviors or fields>` | Main fields, relationships, or domain rules to scaffold | No |
+
+**When to use:** Starting a brand-new capability from scratch — nothing exists yet for this concept. Generates the full DDD vertical slice: domain → application → infrastructure → migration → interface. For individual layers only, use `/new-aggregate`, `/new-use-case`, `/new-repository`, or `/new-migration` separately.
+
+## Examples
+
+```
+/new-feature User registration in the Identity context with email and password
+/new-feature Role management with name, description, and permission assignments
+/new-feature Login attempt tracking with lockout after 5 consecutive failures
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`

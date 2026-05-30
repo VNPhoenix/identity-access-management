@@ -2,6 +2,27 @@
 
 Diagnose and fix the following issue in the current file: $ARGUMENTS
 
+## Usage
+
+```
+/debug <symptom or error description>
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<symptom or error description>` | What is going wrong. Include the exception class, the method where it occurs, or the unexpected runtime behavior. The more specific, the faster the diagnosis. | Yes |
+
+**When to use:** When something isn't working at runtime. Open the relevant file first; Claude reads the git diff to correlate the symptom with recent changes. Covers transaction issues, Spring wiring, JDBC/persistence mapping, JWT errors, and test failures.
+
+## Examples
+
+```
+/debug @Transactional not rolling back in PlaceOrderUseCase
+/debug duplicate key exception when saving User — isNew always false
+/debug JWT authentication returning 401 on a valid token
+/debug child OrderLines not loaded after findById
+```
+
 ## Rules to follow
 - `.claude/rules/ddd-layering.md`
 - `.claude/rules/application-layer.md`
