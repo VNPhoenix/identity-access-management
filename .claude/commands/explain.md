@@ -2,6 +2,29 @@
 
 Explain the current file to a developer unfamiliar with this codebase.
 
+## Usage
+
+```
+/explain
+```
+
+No arguments. Open the file you want explained, then run this command. Claude identifies the layer from the package path and tailors the explanation accordingly.
+
+**When to use:** When onboarding to a file you didn't write, trying to understand domain invariants before modifying them, or reviewing infrastructure mapping before making a schema change.
+
+## Examples
+
+```
+# Open User.java, then:
+/explain
+
+# Open JdbcRoleRepository.java, then:
+/explain
+
+# Open AuthenticationController.java, then:
+/explain
+```
+
 ## Rules to follow
 - `.claude/rules/ddd-layering.md`
 - `.claude/rules/domain-model.md`

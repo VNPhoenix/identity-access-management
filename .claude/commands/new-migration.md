@@ -2,6 +2,27 @@
 
 Generate a Flyway SQL migration for: $ARGUMENTS
 
+## Usage
+
+```
+/new-migration <migration description>
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<migration description>` | Plain-English description of the schema change: create a table, add a column, add an index, etc. Claude picks the next version number automatically by scanning existing migrations. | Yes |
+
+**When to use:** Whenever a schema change is needed — new aggregate table, new column, new index. Run the `migration-validator` agent on the generated file before applying.
+
+## Examples
+
+```
+/new-migration create users table
+/new-migration add email_verified column to users
+/new-migration create index on refresh_tokens user_id
+/new-migration add last_login_at column to users nullable
+```
+
 ## Rules to follow
 - `.claude/rules/infrastructure-layer.md`
 - `.claude/rules/spring-data-jdbc.md`

@@ -2,6 +2,27 @@
 
 Refactor the current file toward correct DDD structure: $ARGUMENTS
 
+## Usage
+
+```
+/refactor <refactoring target>
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<refactoring target>` | What to extract or fix. Common targets: extract a value object, move logic to the right layer, fix Spring Data annotations placed on a domain class, split an oversized use case. | Yes |
+
+**When to use:** When a domain primitive is raw (String, UUID, or Long instead of a typed value object), business logic is in the wrong layer, or the file structure deviates from the DDD rules. This command is structural only — it preserves all existing behaviour.
+
+## Examples
+
+```
+/refactor extract Email value object from User
+/refactor move order total calculation from controller into Order aggregate
+/refactor fix Spring Data JDBC annotations on Order — move to OrderDbEntity
+/refactor split CreateAndNotifyUserUseCase into two focused use cases
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`

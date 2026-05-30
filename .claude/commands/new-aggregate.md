@@ -2,6 +2,28 @@
 
 Scaffold a complete DDD aggregate slice for: $ARGUMENTS
 
+## Usage
+
+```
+/new-aggregate <aggregate name> [<value objects>] [<child entities>]
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<aggregate name>` | PascalCase name of the aggregate | Yes |
+| `<value objects>` | Key value objects and their fields | No |
+| `<child entities>` | Any child entities and their structure | No |
+
+**When to use:** Adding only the domain layer for a new concept. Use when you want to build layer-by-layer or when infrastructure already exists. Follow with `/new-repository` and `/new-migration` to complete the slice.
+
+## Examples
+
+```
+/new-aggregate Product with name, price, and stock quantity
+/new-aggregate Order with line items (productId, quantity, unitPrice) and status
+/new-aggregate RefreshToken with userId, token hash, expiry, and revoked flag
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`

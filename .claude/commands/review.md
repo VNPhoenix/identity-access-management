@@ -2,6 +2,29 @@
 
 Review the current file for DDD correctness and Spring Boot best practices.
 
+## Usage
+
+```
+/review
+```
+
+No arguments. Open the file you want reviewed, then run this command. Claude reads the git diff to focus on what changed recently.
+
+**When to use:** After writing or modifying any file — domain, use case, controller, or infrastructure. Also run before opening a PR to catch DDD and Spring rule violations early. For reviewing multiple files or a full PR, use the `ddd-reviewer` agent instead.
+
+## Examples
+
+```
+# Open User.java, then:
+/review
+
+# Open PlaceOrderUseCase.java, then:
+/review
+
+# Open JwtAuthFilter.java, then:
+/review
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`

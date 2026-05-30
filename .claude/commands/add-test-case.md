@@ -2,6 +2,27 @@
 
 Add a missing test case to the current test file: $ARGUMENTS
 
+## Usage
+
+```
+/add-test-case <scenario description>
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<scenario description>` | Plain-English description of the specific scenario. Include the input condition and the expected outcome or exception. | Yes |
+
+**When to use:** When an existing test file is open and one specific edge case or error path is missing. Claude places the new test inside the correct `@Nested` group and matches the existing style. Use `/write-tests` instead when the whole suite is absent.
+
+## Examples
+
+```
+/add-test-case placing an order with no items throws OrderHasNoItemsException
+/add-test-case POST /api/v1/users with duplicate email returns 409
+/add-test-case findById returns empty Optional when user does not exist
+/add-test-case login attempt with wrong password increments failure count
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/testing.md`

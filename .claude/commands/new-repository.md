@@ -2,6 +2,26 @@
 
 Scaffold a Spring Data JDBC repository for: $ARGUMENTS
 
+## Usage
+
+```
+/new-repository <aggregate name>
+```
+
+| Argument | Description | Required |
+|---|---|---|
+| `<aggregate name>` | PascalCase name of an existing domain aggregate (e.g. `User`, `Role`). The aggregate and its repository interface must already exist in the project. | Yes |
+
+**When to use:** After `/new-aggregate`, when the JDBC persistence layer does not yet exist. Reads the domain aggregate and repository interface already present in the project and generates the four infrastructure classes (`DbEntity`, `DbRepository`, `DbMapper`, `Jdbc{Aggregate}Repository`).
+
+## Examples
+
+```
+/new-repository User
+/new-repository Role
+/new-repository RefreshToken
+```
+
 ## Rules to follow
 - `.claude/rules/code-style.md`
 - `.claude/rules/ddd-layering.md`
