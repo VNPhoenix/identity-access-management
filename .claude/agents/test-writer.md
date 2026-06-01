@@ -24,7 +24,7 @@ Read the source file. Determine the test strategy from the package path:
 |---|---|---|
 | `domain/model/` or `domain/event/` | Unit — no Spring, no mocks | JUnit 5, AssertJ |
 | `application/usecase/` | Unit — mock repositories | JUnit 5, Mockito, BDDMockito |
-| `interface/controller/` | Slice test | `@WebMvcTest`, `@MockBean`, MockMvc |
+| `interface/controller/` | Slice test | `@WebMvcTest`, `@MockitoBean`, MockMvc |
 | `domain/repository/` (Spring Data JDBC) | Integration test | `@SpringBootTest`, Testcontainers PostgreSQL |
 
 ### Step 2 — Write tests by layer
@@ -54,9 +54,14 @@ class {Aggregate}Test {
 @ExtendWith(MockitoExtension.class)
 class {UseCase}Test {
 
-    @Mock {Aggregate}Repository repository;
-    @Mock ApplicationEventPublisher eventPublisher;
-    @InjectMocks {UseCase} useCase;
+    @Mock
+    {Aggregate}Repository repository;
+
+    @Mock
+    ApplicationEventPublisher eventPublisher;
+
+    @InjectMocks
+    {UseCase} useCase;
 
     @Nested
     @DisplayName("execute")
@@ -86,10 +91,14 @@ class {UseCase}Test {
 **Controller (@WebMvcTest)**
 ```java
 @WebMvcTest({Controller}.class)
+@WithMockUser
 class {Controller}Test {
 
-    @Autowired MockMvc mockMvc;
-    @MockBean {UseCase} useCase;
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockitoBean
+    {UseCase} useCase;
 
     @Nested
     @DisplayName("POST /api/v1/{resource}")

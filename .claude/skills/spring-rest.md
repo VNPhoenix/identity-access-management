@@ -12,6 +12,8 @@ public class OrderController {
 
     private final PlaceOrderUseCase placeOrderUseCase;
     private final GetOrderUseCase getOrderUseCase;
+    private final ListOrdersUseCase listOrdersUseCase;
+    private final CancelOrderUseCase cancelOrderUseCase;
     private final OrderRequestMapper requestMapper;
     private final OrderResponseMapper responseMapper;
 

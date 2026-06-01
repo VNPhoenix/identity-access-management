@@ -57,7 +57,7 @@ No arguments. Open the file you want tested, then run this command. Claude ident
 
    **Controller**
    - `@WebMvcTest({Controller}.class)`
-   - `@MockBean` for each use case
+   - `@MockitoBean` for each use case
    - Test: 201/200/204 happy path, 400 validation failure, 404 not found, 422 domain error
 
    **JDBC repository**

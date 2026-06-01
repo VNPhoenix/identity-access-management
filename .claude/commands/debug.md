@@ -79,7 +79,7 @@ Diagnose and fix the following issue in the current file: $ARGUMENTS
 
    **Test issues**
    - Testcontainers datasource URL not wired via `@DynamicPropertySource`
-   - `@MockBean` missing for a use case dependency in `@WebMvcTest`
+   - `@MockitoBean` missing for a use case dependency in `@WebMvcTest`
    - Domain object mocked instead of tested directly
 
 4. State the root cause clearly.
