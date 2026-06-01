@@ -17,7 +17,9 @@ Jdbc{Aggregate}Repository implements {Aggregate}Repository  ← domain repo impl
 @Table("orders")
 class OrderDbEntity implements Persistable<UUID> {
 
-    @Id UUID id;
+    @Id
+    UUID id;
+
     UUID customerId;
     String status;
     BigDecimal totalAmount;
@@ -28,10 +30,13 @@ class OrderDbEntity implements Persistable<UUID> {
     @MappedCollection(idColumn = "order_id")
     List<OrderLineDbEntity> lines = new ArrayList<>();
 
-    @Transient boolean isNew;
+    @Transient
+    boolean isNew;
 
-    @Override public UUID getId()    { return id; }
-    @Override public boolean isNew() { return isNew; }
+    @Override
+    public UUID getId() { return id; }
+    @Override
+    public boolean isNew() { return isNew; }
 }
 
 class OrderLineDbEntity {
@@ -47,7 +52,9 @@ class OrderLineDbEntity {
 @Table("roles")
 class RoleDbEntity {
 
-    @Id Long id;   // null → insert (DB assigns); non-null → update
+    @Id
+    Long id;   // null → insert (DB assigns); non-null → update
+
     String name;
     String description;
     Instant createdAt;
@@ -73,8 +80,8 @@ interface OrderDbRepository extends ListCrudRepository<OrderDbEntity, UUID> {
         """)
     List<OrderDbEntity> findPageByCustomerId(
         @Param("customerId") UUID customerId,
-        @Param("limit")      int limit,
-        @Param("offset")     long offset);
+        @Param("limit") int limit,
+        @Param("offset") long offset);
 
     @Query("SELECT COUNT(*) FROM orders WHERE customer_id = :customerId")
     long countByCustomerId(@Param("customerId") UUID customerId);
