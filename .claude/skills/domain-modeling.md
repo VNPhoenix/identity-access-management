@@ -63,29 +63,33 @@ public record Money(BigDecimal amount, Currency currency) {
 public class Order {
     private final OrderId id;
     private final CustomerId customerId;
-    private final List<OrderLine> lines = new ArrayList<>();
+    private final List<OrderLine> lines;
     private OrderStatus status;
     private final Instant createdAt;
+    private final boolean isNew;
     private final List<Object> events = new ArrayList<>();
 
-    private Order(OrderId id, CustomerId customerId, Instant createdAt) {
+    private Order(OrderId id, CustomerId customerId, OrderStatus status,
+                  List<OrderLine> lines, Instant createdAt, boolean isNew) {
         this.id = id;
         this.customerId = customerId;
-        this.status = OrderStatus.DRAFT;
+        this.status = status;
+        this.lines = new ArrayList<>(lines);
         this.createdAt = createdAt;
+        this.isNew = isNew;
     }
 
     public static Order create(CustomerId customerId) {
-        var order = new Order(OrderId.generate(), customerId, Instant.now());
+        var order = new Order(OrderId.generate(), customerId, OrderStatus.DRAFT,
+                              List.of(), Instant.now(), true);
         order.events.add(new OrderCreated(order.id, customerId, order.createdAt));
         return order;
     }
 
     public static Order reconstitute(OrderId id, CustomerId customerId,
-                                     OrderStatus status, Instant createdAt) {
-        var order = new Order(id, customerId, createdAt);
-        order.status = status;
-        return order;
+                                     OrderStatus status, List<OrderLine> lines,
+                                     Instant createdAt) {
+        return new Order(id, customerId, status, lines, createdAt, false);
     }
 
     public void place() {
@@ -95,14 +99,14 @@ public class Order {
         events.add(new OrderPlaced(id, customerId, Instant.now()));
     }
 
-    public List<OrderLine> lines()          { return Collections.unmodifiableList(lines); }
-    public void reconstituteLine(OrderLine l) { lines.add(l); }
-    public List<Object> domainEvents()      { return Collections.unmodifiableList(events); }
-    public void clearDomainEvents()         { events.clear(); }
-    public OrderId id()                     { return id; }
-    public CustomerId customerId()          { return customerId; }
-    public OrderStatus status()             { return status; }
-    public Instant createdAt()              { return createdAt; }
+    public List<OrderLine> lines()      { return Collections.unmodifiableList(lines); }
+    public List<Object> domainEvents()  { return Collections.unmodifiableList(events); }
+    public void clearDomainEvents()     { events.clear(); }
+    public OrderId id()                 { return id; }
+    public CustomerId customerId()      { return customerId; }
+    public OrderStatus status()         { return status; }
+    public Instant createdAt()          { return createdAt; }
+    public boolean isNew()              { return isNew; }
 }
 ```
 

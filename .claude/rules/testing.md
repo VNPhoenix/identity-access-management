@@ -38,9 +38,14 @@ Mock only the repository interfaces — never mock domain objects:
 @ExtendWith(MockitoExtension.class)
 class PlaceOrderUseCaseTest {
 
-    @Mock OrderRepository orderRepository;
-    @Mock CustomerRepository customerRepository;
-    @InjectMocks PlaceOrderUseCase useCase;
+    @Mock
+    OrderRepository orderRepository;
+
+    @Mock
+    CustomerRepository customerRepository;
+
+    @InjectMocks
+    PlaceOrderUseCase useCase;
 
     @Test
     @DisplayName("saves order and returns order id when customer exists")
@@ -62,10 +67,14 @@ Mock the use case — test HTTP wiring only:
 
 ```java
 @WebMvcTest(OrderController.class)
+@WithMockUser
 class OrderControllerTest {
 
-    @Autowired MockMvc mockMvc;
-    @MockBean PlaceOrderUseCase placeOrderUseCase;
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockitoBean
+    PlaceOrderUseCase placeOrderUseCase;
 
     @Nested
     @DisplayName("POST /api/v1/orders")
@@ -114,7 +123,8 @@ class JdbcOrderRepositoryTest {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-    @Autowired JdbcOrderRepository repository;
+    @Autowired
+    JdbcOrderRepository repository;
 
     @Test
     @DisplayName("finds order by id after saving")

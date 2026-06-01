@@ -20,7 +20,9 @@ Plain class with Spring Data JDBC mapping annotations. Lives in `infrastructure/
 @Table("orders")
 class OrderDbEntity implements Persistable<UUID> {
 
-    @Id UUID id;
+    @Id
+    UUID id;
+
     UUID customerId;
     String status;
     BigDecimal totalAmount;
@@ -31,10 +33,14 @@ class OrderDbEntity implements Persistable<UUID> {
     @MappedCollection(idColumn = "order_id")
     List<OrderLineDbEntity> lines = new ArrayList<>();
 
-    @Transient boolean isNew;
+    @Transient
+    boolean isNew;
 
-    @Override public UUID getId()   { return id; }
-    @Override public boolean isNew() { return isNew; }
+    @Override
+    public UUID getId() { return id; }
+
+    @Override
+    public boolean isNew() { return isNew; }
 }
 ```
 
